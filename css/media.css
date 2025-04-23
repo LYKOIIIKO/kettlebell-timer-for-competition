@@ -1,0 +1,5 @@
+@media screen and (max-aspect-ratio: 4/3) {
+	body {
+		font-size: 33vw;
+	}
+}
