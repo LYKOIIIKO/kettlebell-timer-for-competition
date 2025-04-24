@@ -1,10 +1,10 @@
 @font-face {
-	font-family: 'Moscow2024';
+	font-family: "Moscow2024";
 	src: url(../fonts/MOSCOW2024.otf);
 }
 
 @font-face {
-	font-family: 'Naziona';
+	font-family: "Naziona";
 	src: url(../fonts/Naziona.otf);
 }
 
@@ -22,13 +22,12 @@ body,
 }
 
 body {
-	font-family: 'Moscow2024';
-	/* font-family: 'Naziona'; */
+	font-family: "Moscow2024", "Naziona", "Franklin Gothic Medium";
 	font-size: 44vh;
 	color: red;
 
 	background-color: #000;
-	user-select: none
+	user-select: none;
 }
 
 .wrapper {
@@ -45,4 +44,38 @@ body {
 	align-items: center;
 	width: 100%;
 	justify-content: center;
+
+	position: relative;
+}
+
+.timer__min, .timer__sec {
+	position: fixed;
+}
+
+.timer__min {
+	right: 53vw;
+}
+
+.timer__sec {
+	left: 52.5vw;
+}
+
+.time__btns {
+	position: fixed;
+	left: 20vw;
+}
+
+.time__btn {
+	font-size: 0.2em;
+
+	cursor: pointer;
+}
+
+.time__btn:hover {
+	opacity: 0.8;
+}
+
+.time__btn.active {
+	background-color: rgba(106, 106, 106, 0.588);
+	border-radius: 10px;
 }

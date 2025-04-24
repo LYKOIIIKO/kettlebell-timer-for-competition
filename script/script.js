@@ -1,102 +1,164 @@
 let App = function () {
 	let elems = null,
-		stopwatchWork = false;
+		stopwatchWork = false,
+		stopwatchStop = "",
+		stopwatchStoped = false;
 
 	const createUI = () => {
-		let wrapperElem = document.createElement('div')
-		wrapperElem.classList.add('wrapper')
-		let timerElem = document.createElement('div')
-		timerElem.classList.add('timer')
-		let timerInnerElem = document.createElement('timer_inner')
-		timerInnerElem.classList.add('timer__inner')
-		let counterElem = document.createElement('div')
-		counterElem.classList.add('counter')
-		let counterInnerElem = document.createElement('counter__inner')
-		counterInnerElem.classList.add('counter__inner')
+		let wrapperElem = document.createElement("div");
+		wrapperElem.classList.add("wrapper");
+		let timerElem = document.createElement("div");
+		timerElem.classList.add("timer");
+		let counterElem = document.createElement("div");
+		counterElem.classList.add("counter");
 
-		timerInnerElem.innerHTML = '00:00'
-		counterInnerElem.innerHTML = '0'
+		let timerMinElem = document.createElement("div");
+		timerMinElem.classList.add("timer__min");
+		let timerColonElem = document.createElement("div");
+		timerColonElem.classList.add("timer__colon");
+		let timerSecElem = document.createElement("div");
+		timerSecElem.classList.add("timer__sec");
 
-		timerElem.title = 'Click to start / double click to restart'
+		let counterInnerElem = document.createElement("div");
+		counterInnerElem.classList.add("counter__inner");
 
-		counterElem.append(counterInnerElem)
-		timerElem.append(timerInnerElem)
-		wrapperElem.append(timerElem, counterElem)
+		let timeBtnsElem = document.createElement("div");
+		timeBtnsElem.classList.add("time__btns");
 
-		timerInnerElem.addEventListener('click', () => {
+		createTimeBtn(timeBtnsElem, "10:00");
+		createTimeBtn(timeBtnsElem, "12:00");
+		createTimeBtn(timeBtnsElem, "15:00");
+
+		counterInnerElem.innerHTML = "0";
+		timerMinElem.innerHTML = "00";
+		timerColonElem.innerHTML = ":";
+		timerSecElem.innerHTML = "00";
+
+		timerElem.title = "Click to start / double click to restart";
+
+		counterElem.append(timeBtnsElem, counterInnerElem);
+		timerElem.append(timerMinElem, timerColonElem, timerSecElem);
+		wrapperElem.append(timerElem, counterElem);
+
+		timerElem.addEventListener("click", () => {
 			if (!stopwatchWork) {
-				stopwatch(timerInnerElem)
-				timerInnerElem.removeEventListener('dblclick', clearUI)
-				timerInnerElem.addEventListener('dblclick', clearUI)
+				stopwatch(timerMinElem, timerSecElem);
+				timerElem.removeEventListener("dblclick", clearUI);
+				timerElem.addEventListener("dblclick", clearUI);
 			}
-		})
+		});
 
-		counterInnerElem.addEventListener('click', () => {
-			if (stopwatchWork && counterInnerElem.innerHTML < 9999) counterInnerElem.innerHTML++
-		})
-		counterInnerElem.addEventListener('contextmenu', () => {
-			event.preventDefault()
-			if (counterInnerElem.innerHTML > 0) counterInnerElem.innerHTML--
-		})
-
+		counterInnerElem.addEventListener("click", () => {
+			if (!stopwatchStoped && stopwatchWork && counterInnerElem.innerHTML < 9999)
+				counterInnerElem.innerHTML++;
+		});
+		counterInnerElem.addEventListener("contextmenu", () => {
+			event.preventDefault();
+			if (!stopwatchStoped && counterInnerElem.innerHTML > 0) counterInnerElem.innerHTML--;
+		});
 
 		return {
-			timer: timerInnerElem,
+			timer: timerElem,
+			timerMin: timerMinElem,
+			timerSec: timerSecElem,
 			counter: counterInnerElem,
-			main: wrapperElem
-		}
-	}
+			main: wrapperElem,
+			btns: timeBtnsElem,
+		};
+	};
 
+	const createTimeBtn = (box, time) => {
+		let timeBtnElem = document.createElement("div");
+		timeBtnElem.classList.add("time__btn");
 
-	const stopwatch = (elem) => {
+		timeBtnElem.innerHTML = time;
+
+		box.append(timeBtnElem);
+	};
+
+	const setActive = () => {
+		let btns = document.querySelectorAll(".time__btn");
+
+		btns.forEach((item) => {
+			item.addEventListener("click", (event) => {
+				if (!stopwatchWork) {
+					btns.forEach((item) => {
+						item.classList.remove("active");
+					});
+					item.classList.add("active");
+					elems.timerMin.innerHTML =
+						item.innerHTML[0] + item.innerHTML[1];
+					stopwatchStop = item.innerHTML;
+				}
+			});
+		});
+	};
+
+	const stopwatch = (minElem, secElem) => {
 		stopwatchWork = true;
+		stopwatchStoped = false;
 		let hours1 = 0,
 			hours2 = 0,
 			minutes1 = 0,
 			minutes2 = 1,
-			timer;
+			timerMin,
+			timerSec;
 
-		stopwatchInterval = setInterval(() => {
-			timer = hours1 + '' + hours2 + ':' + minutes1 + '' + minutes2;
+		stopwatchInterval = setInterval(
+			() => {
+				if (hours1 == stopwatchStop[0] && hours2 == stopwatchStop[1]) {
+					clearInterval(stopwatchInterval);
+					stopwatchStoped = true;
+				}
 
-			if (minutes2 < 10) minutes2++;
-			if (minutes2 == 10) {
-				minutes2 = 0;
-				minutes1++;
-			}
+				timerMin = hours1 + "" + hours2;
+				timerSec = minutes1 + "" + minutes2;
 
-			if (minutes1 == 6) {
-				minutes1 = 0;
-				hours2++;
-			}
+				if (minutes2 < 10) minutes2++;
+				if (minutes2 == 10) {
+					minutes2 = 0;
+					minutes1++;
+				}
 
-			if (hours2 == 10) {
-				hours2 = 0;
-				hours1++;
-			}
+				if (minutes1 == 6) {
+					minutes1 = 0;
+					hours2++;
+				}
 
-			if (hours1 == 10) clearInterval(timerLive);
+				if (hours2 == 10) {
+					hours2 = 0;
+					hours1++;
+				}
 
-			elem.innerHTML = timer;
-		}, 1000, elem);
-	}
+				if (hours1 == 10) clearInterval(stopwatchInterval);
+
+				minElem.innerHTML = timerMin;
+				secElem.innerHTML = timerSec;
+			},
+			1000,
+			minElem,
+			secElem
+		);
+	};
 
 	const clearUI = () => {
-		clearInterval(stopwatchInterval)
-		stopwatchWork = false
-		elems.timer.innerHTML = '00:00'
-		elems.counter.innerHTML = '0'
-	}
+		clearInterval(stopwatchInterval);
+		stopwatchWork = false;
+		elems.timerMin.innerHTML = "00";
+		elems.timerSec.innerHTML = "00";
+		elems.counter.innerHTML = "0";
+	};
 
 	const init = () => {
-		elems = createUI()
-		let root = document.getElementById('root')
-		root.append(elems.main)
-	}
+		elems = createUI();
+		let root = document.getElementById("root");
+		root.append(elems.main);
+		setActive();
+	};
 
-	init()
-}
+	init();
+};
 
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
 	new App();
-})
+});
