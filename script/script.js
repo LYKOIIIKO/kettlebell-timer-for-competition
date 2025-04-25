@@ -49,12 +49,17 @@ let App = function () {
 		});
 
 		counterInnerElem.addEventListener("click", () => {
-			if (!stopwatchStoped && stopwatchWork && counterInnerElem.innerHTML < 9999)
+			if (
+				!stopwatchStoped &&
+				stopwatchWork &&
+				counterInnerElem.innerHTML < 9999
+			)
 				counterInnerElem.innerHTML++;
 		});
 		counterInnerElem.addEventListener("contextmenu", () => {
 			event.preventDefault();
-			if (!stopwatchStoped && counterInnerElem.innerHTML > 0) counterInnerElem.innerHTML--;
+			if (!stopwatchStoped && counterInnerElem.innerHTML > 0)
+				counterInnerElem.innerHTML--;
 		});
 
 		return {
@@ -78,6 +83,7 @@ let App = function () {
 
 	const setActive = () => {
 		let btns = document.querySelectorAll(".time__btn");
+		setStopwatch(btns[0])
 
 		btns.forEach((item) => {
 			item.addEventListener("click", (event) => {
@@ -85,14 +91,17 @@ let App = function () {
 					btns.forEach((item) => {
 						item.classList.remove("active");
 					});
-					item.classList.add("active");
-					elems.timerMin.innerHTML =
-						item.innerHTML[0] + item.innerHTML[1];
-					stopwatchStop = item.innerHTML;
+					setStopwatch(item)
 				}
 			});
 		});
 	};
+
+	const setStopwatch = (elem) => {
+		elem.classList.add("active");
+		elems.timerMin.innerHTML = elem.innerHTML[0] + elem.innerHTML[1];
+		stopwatchStop = elem.innerHTML;
+	}
 
 	const stopwatch = (minElem, secElem) => {
 		stopwatchWork = true;
@@ -144,8 +153,12 @@ let App = function () {
 	const clearUI = () => {
 		clearInterval(stopwatchInterval);
 		stopwatchWork = false;
-		elems.timerMin.innerHTML = "00";
-		elems.timerSec.innerHTML = "00";
+		let btns = document.querySelectorAll(".time__btn");
+		btns.forEach((item) => {
+			item.classList.remove('active')
+		})
+		setStopwatch(elems.btns.firstChild)
+		elems.timerSec.innerHTML = '00'
 		elems.counter.innerHTML = "0";
 	};
 
