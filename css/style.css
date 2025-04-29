@@ -48,6 +48,11 @@ body {
 	position: relative;
 }
 
+.counter {
+	justify-content: space-between;
+	max-width: 130vh;
+}
+
 .timer__min, .timer__sec {
 	position: fixed;
 }
@@ -60,13 +65,8 @@ body {
 	left: 52.5vw;
 }
 
-.time__btns {
-	position: fixed;
-	left: 20vw;
-}
-
 .time__btn {
-	font-size: 0.2em;
+	font-size: 0.15em;
 
 	cursor: pointer;
 }
