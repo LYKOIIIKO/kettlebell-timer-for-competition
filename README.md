@@ -2,4 +2,4 @@ This timer is designed specifically for counting kettlebell lifts in competition
 
 __RUN__ https://lykoiiiko.github.io/kettlebell-timer-for-competition/
 
-![alt text](https://github.com/LYKOIIIKO/JS_Tamagotchi/blob/main/assets/images/pet_eat.gif?raw=true)
+![logo](https://github.com/LYKOIIIKO/kettlebell-timer-for-competition/blob/main/img/image.png?raw=true)
