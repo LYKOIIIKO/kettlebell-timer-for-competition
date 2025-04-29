@@ -1,5 +1,7 @@
 This timer is designed specifically for counting kettlebell lifts in competition. Please use it in good health!
 
-__RUN__ https://lykoiiiko.github.io/kettlebell-timer-for-competition/
+You can pack this timer with electron library to run app directly from desctop without using a browser!
 
-![logo](https://github.com/LYKOIIIKO/kettlebell-timer-for-competition/blob/main/img/image.png?raw=true)
+__RUN ONLINE__ https://lykoiiiko.github.io/kettlebell-timer-for-competition/
+
+![logo-img](https://github.com/LYKOIIIKO/kettlebell-timer-for-competition/blob/main/img/image.png?raw=true)
