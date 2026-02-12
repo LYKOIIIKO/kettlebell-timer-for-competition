@@ -6,7 +6,9 @@ let App = function () {
 		savedMinutes = "",
 		savedSeconds = "",
 		checkManualTimeSet = false,
-		tooltipElem = null
+		tooltipElem = null,
+		startAudio = new Audio("audio/start.mp3"),
+		endAudio = new Audio("audio/end.mp3")
 
 	const createUI = () => {
 		let wrapperElem = document.createElement("div")
@@ -253,6 +255,9 @@ let App = function () {
 		stopwatchStoped = false
 		elems.counter.innerHTML = "0"
 
+		// Воспроизводим сигнал старта
+		startAudio.play().catch((e) => console.error("Error playing start audio:", e))
+
 		// Получаем текущие значения минут и секунд из таймера
 		let currentMinutes = Number.parseInt(minElem.innerHTML)
 		let currentSeconds = Number.parseInt(secElem.innerHTML)
@@ -292,6 +297,9 @@ let App = function () {
 					clearInterval(stopwatchInterval)
 					stopwatchWork = false
 					stopwatchStoped = true
+
+					// Воспроизводим сигнал окончания
+					endAudio.play().catch((e) => console.error("Error playing end audio:", e))
 
 					minElem.innerHTML = "00"
 					secElem.innerHTML = "00"
